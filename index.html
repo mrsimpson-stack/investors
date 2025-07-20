@@ -3,51 +3,106 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Investment Platform - Login</title>
-    <link rel="stylesheet" href="style.css">
-    <!-- Add Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth-compat.js"></script>
+    <title>Investment Platform</title>
+    <style>
+        /* (Keep all the same CSS styles from previous example) */
+    </style>
 </head>
 <body>
-    <div class="auth-container">
-        <div class="auth-tabs">
-            <button class="tab-btn active" id="login-tab">Login</button>
-            <button class="tab-btn" id="register-tab">Register</button>
-        </div>
-        
-        <div class="auth-form" id="login-form">
-            <h2>Login to Your Account</h2>
-            <div class="form-group">
-                <label for="login-email">Email</label>
-                <input type="email" id="login-email" placeholder="Enter your email">
-            </div>
-            <div class="form-group">
-                <label for="login-password">Password</label>
-                <input type="password" id="login-password" placeholder="Enter your password">
-            </div>
-            <button id="login-btn" class="btn-primary">Login</button>
-            <div id="login-error" class="error-message"></div>
-        </div>
-        
-        <div class="auth-form hidden" id="register-form">
-            <h2>Create New Account</h2>
-            <div class="form-group">
-                <label for="register-email">Email</label>
-                <input type="email" id="register-email" placeholder="Enter your email">
-            </div>
-            <div class="form-group">
-                <label for="register-password">Password</label>
-                <input type="password" id="register-password" placeholder="Create a password">
-            </div>
-            <button id="register-btn" class="btn-primary">Register</button>
-            <div id="register-error" class="error-message"></div>
-        </div>
-    </div>
+    <!-- (Keep all the same HTML from previous example) -->
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-firestore-compat.js"></script>
     
-    <!-- Add your firebase config -->
-    <script src="firebase.js"></script>
-    <!-- Add your auth logic -->
-    <script src="auth.js"></script>
+    <!-- Firebase Config -->
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyBICZI32fABdPZgbQOHBQXFsJO9dX6gb04",
+            authDomain: "investmentprogram-465e1.firebaseapp.com",
+            projectId: "investmentprogram-465e1",
+            storageBucket: "investmentprogram-465e1.appspot.com",
+            messagingSenderId: "622413064768",
+            appId: "1:622413064768:web:cba70a77d38307745c0da5"
+        };
+        firebase.initializeApp(firebaseConfig);
+    </script>
+
+    <!-- Auth Logic -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check if user is already logged in
+            firebase.auth().onAuthStateChanged(function(user) {
+                if (user) {
+                    window.location.href = "dashboard.html";
+                }
+            });
+
+            // (Keep all the same tab switching code from previous example)
+
+            // Enhanced Login Function
+            document.getElementById('login-btn').addEventListener('click', function() {
+                const email = document.getElementById('login-email').value;
+                const password = document.getElementById('login-password').value;
+                
+                if (!email || !password) {
+                    document.getElementById('login-error').textContent = 'Please fill in all fields';
+                    return;
+                }
+
+                firebase.auth().signInWithEmailAndPassword(email, password)
+                    .then(function(userCredential) {
+                        // Create user document if doesn't exist
+                        return firebase.firestore().collection('users').doc(userCredential.user.uid).set({
+                            email: email,
+                            lastLogin: firebase.firestore.FieldValue.serverTimestamp()
+                        }, { merge: true });
+                    })
+                    .then(function() {
+                        window.location.href = "dashboard.html";
+                    })
+                    .catch(function(error) {
+                        document.getElementById('login-error').textContent = getErrorMessage(error.code);
+                    });
+            });
+
+            // Enhanced Register Function
+            document.getElementById('register-btn').addEventListener('click', function() {
+                const email = document.getElementById('register-email').value;
+                const password = document.getElementById('register-password').value;
+                
+                if (!email || !password) {
+                    document.getElementById('register-error').textContent = 'Please fill in all fields';
+                    return;
+                }
+
+                if (password.length < 6) {
+                    document.getElementById('register-error').textContent = 'Password must be at least 6 characters';
+                    return;
+                }
+
+                firebase.auth().createUserWithEmailAndPassword(email, password)
+                    .then(function(userCredential) {
+                        // Create user document with initial data
+                        return firebase.firestore().collection('users').doc(userCredential.user.uid).set({
+                            email: email,
+                            balance: 0,
+                            totalEarnings: 2000, // Sign-up bonus
+                            createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                            lastLogin: firebase.firestore.FieldValue.serverTimestamp()
+                        });
+                    })
+                    .then(function() {
+                        window.location.href = "dashboard.html";
+                    })
+                    .catch(function(error) {
+                        document.getElementById('register-error').textContent = getErrorMessage(error.code);
+                    });
+            });
+
+            // (Keep other helper functions the same)
+        });
+    </script>
 </body>
 </html>

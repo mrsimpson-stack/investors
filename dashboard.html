@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Investment Dashboard</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <header class="dashboard-header">
+            <div class="logo">InvestPro</div>
+            <nav class="nav-menu">
+                <a href="dashboard.html" class="active">Dashboard</a>
+                <a href="deposit.html">Deposit</a>
+                <a href="withdraw.html">Withdraw</a>
+                <a href="transactions.html">Transactions</a>
+                <button id="logout-btn" class="btn-logout">Logout</button>
+            </nav>
+        </header>
+        
+        <main class="dashboard-main">
+            <div class="welcome-banner">
+                <h1>Welcome, <span id="user-name">User</span>!</h1>
+                <p>Start growing your investments today</p>
+            </div>
+            
+            <div class="stats-container">
+                <div class="stat-card">
+                    <h3>Account Balance</h3>
+                    <p class="balance-amount" id="account-balance">$0.00</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Today's Earnings</h3>
+                    <p class="earnings-amount" id="today-earnings">$0.00</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Total Earnings</h3>
+                    <p class="total-earnings" id="total-earnings">$0.00</p>
+                </div>
+            </div>
+            
+            <div class="bonus-modal hidden" id="bonus-modal">
+                <div class="modal-content">
+                    <span class="close-modal">&times;</span>
+                    <h2>🎉 Congratulations!</h2>
+                    <p>You've received a sign-up bonus of <strong>$2,000</strong>!</p>
+                    <p>Deposit funds to start earning daily returns.</p>
+                    <button class="btn-primary" id="bonus-ok-btn">OK</button>
+                </div>
+            </div>
+            
+            <div class="packages-section">
+                <h2>Investment Packages</h2>
+                <div class="packages-grid">
+                    <div class="package-card">
+                        <h3>Starter</h3>
+                        <p class="package-amount">$10,000</p>
+                        <p class="package-earnings">Earn $2,000 daily</p>
+                        <p class="package-duration">For 60 days</p>
+                        <button class="btn-invest" data-amount="10000">Invest Now</button>
+                    </div>
+                    <div class="package-card">
+                        <h3>Bronze</h3>
+                        <p class="package-amount">$30,000</p>
+                        <p class="package-earnings">Earn $4,000 daily</p>
+                        <p class="package-duration">For 60 days</p>
+                        <button class="btn-invest" data-amount="30000">Invest Now</button>
+                    </div>
+                    <div class="package-card">
+                        <h3>Silver</h3>
+                        <p class="package-amount">$50,000</p>
+                        <p class="package-earnings">Earn $7,000 daily</p>
+                        <p class="package-duration">For 60 days</p>
+                        <button class="btn-invest" data-amount="50000">Invest Now</button>
+                    </div>
+                    <div class="package-card">
+                        <h3>Gold</h3>
+                        <p class="package-amount">$75,000</p>
+                        <p class="package-earnings">Earn $12,000 daily</p>
+                        <p class="package-duration">For 60 days</p>
+                        <button class="btn-invest" data-amount="75000">Invest Now</button>
+                    </div>
+                    <div class="package-card">
+                        <h3>Platinum</h3>
+                        <p class="package-amount">$120,000</p>
+                        <p class="package-earnings">Earn $17,000 daily</p>
+                        <p class="package-duration">For 60 days</p>
+                        <button class="btn-invest" data-amount="120000">Invest Now</button>
+                    </div>
+                    <div class="package-card">
+                        <h3>Diamond</h3>
+                        <p class="package-amount">$200,000</p>
+                        <p class="package-earnings">Earn $25,000 daily</p>
+                        <p class="package-duration">For 60 days</p>
+                        <button class="btn-invest" data-amount="200000">Invest Now</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="investment-modal hidden" id="investment-modal">
+                <div class="modal-content">
+                    <span class="close-modal">&times;</span>
+                    <h2>Investment Instructions</h2>
+                    <p>Deposit the amount you want to invest and the system will automatically invest it for you.</p>
+                    <button class="btn-primary" id="goto-deposit-btn">Go to Deposit</button>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <script src="js/firebase.js"></script>
+    <script src="js/dashboard.js"></script>
+</body>
+</html>
